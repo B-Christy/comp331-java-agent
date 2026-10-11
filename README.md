@@ -53,7 +53,7 @@ mvn compile exec:java "-Dexec.args=--verbose Explain this Java method"
 "Write a Java method that counts words in a string"
 
 **What it returned:**  
-Code was renamed and saved as TextUtilsOld.java
+Code was renamed and saved as TestUtilsOld.java
 
 ### Structured attempt
 
@@ -69,4 +69,4 @@ It created TextUtils.java as well as multiple tests inside AppTest.java
 
 ### Comparison
 
-The code created using the naive prompt did surprisingly well in covering fail cases, but it fails to return 0 for an empty string. It also used a completely different approach using the Pattern class.
+The code created using the naive prompt did surprisingly well in covering fail cases, but throws an exception for a null string. It also used a completely different approach using the Pattern class.
