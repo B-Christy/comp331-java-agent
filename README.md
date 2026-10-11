@@ -47,7 +47,7 @@ mvn compile exec:java "-Dexec.args=--verbose Explain this Java method"
 
 ### First attempt
 
-![Copilot prompt and response](screenshots/Naive-Prompt.png)
+![Copilot prompt and response](Screenshots/Naive-Prompt.png)
 
 **Prompt:**  
 "Write a Java method that counts words in a string"
@@ -57,7 +57,7 @@ Code was renamed and saved as TextUtilsOld.java
 
 ### Structured attempt
 
-![Copilot prompt and response](screenshots/Structured-Prompt.png)
+![Copilot prompt and response](Screenshots/Structured-Prompt.png)
 
 Task specifications were used to make this structured prompt:
 
