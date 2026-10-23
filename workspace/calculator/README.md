@@ -12,4 +12,6 @@ Run all automated checks from this directory with `mvn test`.
 
 The tests use a small tolerance when comparing decimal results. Human review should also confirm that the test names and assertions match the intended calculator behavior.
 
+### 1st Implementation Test Results:
+
 ![Calculator Test Results](Test-Results.png)
