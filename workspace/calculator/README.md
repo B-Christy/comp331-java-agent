@@ -14,4 +14,6 @@ The tests use a small tolerance when comparing decimal results. Human review sho
 
 ### 1st Implementation Test Results:
 
+Commit hash: 9a4a698ecf80ba5333f1c528ab1e92062c92eda2
+
 ![Calculator Test Results](Test-Results.png)
