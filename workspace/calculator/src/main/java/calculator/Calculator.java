@@ -1,5 +1,6 @@
 package calculator;
 
+// 1st AI iteration
 public class Calculator {
 
     private enum Operation {
