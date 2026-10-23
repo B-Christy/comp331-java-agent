@@ -23,3 +23,9 @@ Commit hash: 9a4a698ecf80ba5333f1c528ab1e92062c92eda2
 Commit hash: e8a035491794838dd1d00ec70c8e3dee9c96519e
 
 ![AI Calculator Test Results](../Screenshots/1st-AI-iteration.png)
+
+### 2nd AI Iteration Test Results:
+
+Commit hash: f6c4f99794a2c4c0b84cf94408e30d58c9c0c9c1
+
+![AI Calculator Test Results 2](../Screenshots/2nd-AI-Iteration.png)
