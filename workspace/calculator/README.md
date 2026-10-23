@@ -16,4 +16,10 @@ The tests use a small tolerance when comparing decimal results. Human review sho
 
 Commit hash: 9a4a698ecf80ba5333f1c528ab1e92062c92eda2
 
-![Calculator Test Results](Test-Results.png)
+![Calculator Test Results](../Screenshots/First-Test-Results.png)
+
+### 1st AI Iteration Test Results:
+
+Commit hash: e8a035491794838dd1d00ec70c8e3dee9c96519e
+
+![AI Calculator Test Results](../Screenshots/1st-AI-iteration.png)
