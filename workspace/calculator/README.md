@@ -11,3 +11,5 @@ Run all automated checks from this directory with `mvn test`.
 | All calculator tests pass when run through Maven.                                                  | Run `mvn test`; confirm the build succeeds and the test summary reports no failures or errors.               |
 
 The tests use a small tolerance when comparing decimal results. Human review should also confirm that the test names and assertions match the intended calculator behavior.
+
+![Calculator Test Results](Test-Results.png)
