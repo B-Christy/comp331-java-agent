@@ -1,46 +1,52 @@
 package calculator;
 
-// 1st AI iteration
 public class Calculator {
 
     private enum Operation {
-        ADD,
-        SUBTRACT,
-        MULTIPLY,
-        DIVIDE
-    }
-
-    public double add(double first, double second) {
-        return calculate(first, second, Operation.ADD);
-    }
-
-    public double subtract(double first, double second) {
-        return calculate(first, second, Operation.SUBTRACT);
-    }
-
-    public double multiply(double first, double second) {
-        return calculate(first, second, Operation.MULTIPLY);
-    }
-
-    public double divide(double first, double second) {
-        return calculate(first, second, Operation.DIVIDE);
-    }
-
-    private double calculate(double first, double second, Operation operation) {
-        switch (operation) {
-            case ADD:
+        ADD {
+            @Override
+            double apply(double first, double second) {
                 return first + second;
-            case SUBTRACT:
+            }
+        },
+        SUBTRACT {
+            @Override
+            double apply(double first, double second) {
                 return first - second;
-            case MULTIPLY:
+            }
+        },
+        MULTIPLY {
+            @Override
+            double apply(double first, double second) {
                 return first * second;
-            case DIVIDE:
-                if (second == 0.0) {
+            }
+        },
+        DIVIDE {
+            @Override
+            double apply(double first, double second) {
+                if (Double.doubleToRawLongBits(second) == 0L) {
                     throw new IllegalArgumentException("Cannot divide by zero");
                 }
                 return first / second;
-            default:
-                throw new AssertionError("Unexpected operation: " + operation);
-        }
+            }
+        };
+
+        abstract double apply(double first, double second);
+    }
+
+    public double add(double first, double second) {
+        return Operation.ADD.apply(first, second);
+    }
+
+    public double subtract(double first, double second) {
+        return Operation.SUBTRACT.apply(first, second);
+    }
+
+    public double multiply(double first, double second) {
+        return Operation.MULTIPLY.apply(first, second);
+    }
+
+    public double divide(double first, double second) {
+        return Operation.DIVIDE.apply(first, second);
     }
 }
