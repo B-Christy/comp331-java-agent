@@ -21,15 +21,28 @@ public class ReadFileToolTest {
         Path sandbox = temporaryFolder.newFolder("sandbox").toPath();
         String contents = "Hello, sandbox!\nこんにちは";
         Files.writeString(sandbox.resolve("message.txt"), contents);
-        ReadFileTool tool = new ReadFileTool(sandbox);
+        ReadFileTool tool = new ReadFileTool(new SandboxFileStore(sandbox));
 
         assertEquals(contents, tool.execute("message.txt"));
     }
 
     @Test
+    public void limitsReadToTenThousandCharacters() throws Exception {
+        Path sandbox = temporaryFolder.newFolder("sandbox").toPath();
+        String contents = "a".repeat(10_001);
+        Files.writeString(sandbox.resolve("message.txt"), contents);
+        ReadFileTool tool = new ReadFileTool(new SandboxFileStore(sandbox));
+
+        String result = tool.execute("message.txt");
+
+        assertEquals(10_000, result.length());
+        assertEquals(contents.substring(0, 10_000), result);
+    }
+
+    @Test
     public void rejectsMissingFile() throws Exception {
         Path sandbox = temporaryFolder.newFolder("sandbox").toPath();
-        ReadFileTool tool = new ReadFileTool(sandbox);
+        ReadFileTool tool = new ReadFileTool(new SandboxFileStore(sandbox));
 
         ToolException exception = assertThrows(
                 ToolException.class, () -> tool.execute("missing.txt"));
@@ -41,7 +54,7 @@ public class ReadFileToolTest {
     public void rejectsDirectoryPassedAsFile() throws Exception {
         Path sandbox = temporaryFolder.newFolder("sandbox").toPath();
         Files.createDirectory(sandbox.resolve("folder"));
-        ReadFileTool tool = new ReadFileTool(sandbox);
+        ReadFileTool tool = new ReadFileTool(new SandboxFileStore(sandbox));
 
         assertThrows(ToolException.class, () -> tool.execute("folder"));
     }
@@ -49,7 +62,8 @@ public class ReadFileToolTest {
     @Test
     public void rejectsPathThatTraversesOutsideSandbox() throws Exception {
         Path sandbox = temporaryFolder.newFolder("sandbox").toPath();
-        ReadFileTool tool = new ReadFileTool(sandbox);
+        Files.writeString(temporaryFolder.getRoot().toPath().resolve("outside.txt"), "outside");
+        ReadFileTool tool = new ReadFileTool(new SandboxFileStore(sandbox));
 
         assertThrows(ToolException.class, () -> tool.execute("../outside.txt"));
     }
@@ -58,7 +72,7 @@ public class ReadFileToolTest {
     public void rejectsAbsolutePath() throws Exception {
         Path sandbox = temporaryFolder.newFolder("sandbox").toPath();
         Path outsideFile = temporaryFolder.newFile("outside.txt").toPath();
-        ReadFileTool tool = new ReadFileTool(sandbox);
+        ReadFileTool tool = new ReadFileTool(new SandboxFileStore(sandbox));
 
         assertThrows(ToolException.class, () -> tool.execute(outsideFile.toString()));
     }
@@ -66,17 +80,18 @@ public class ReadFileToolTest {
     @Test
     public void rejectsNullAndBlankPaths() throws Exception {
         Path sandbox = temporaryFolder.newFolder("sandbox").toPath();
-        ReadFileTool tool = new ReadFileTool(sandbox);
+        ReadFileTool tool = new ReadFileTool(new SandboxFileStore(sandbox));
 
         assertThrows(ToolException.class, () -> tool.execute(null));
         assertThrows(ToolException.class, () -> tool.execute(" \t\n"));
     }
 
     @Test
-    public void exposesToolMetadata() {
-        ReadFileTool tool = new ReadFileTool(temporaryFolder.getRoot().toPath());
+    public void exposesToolMetadata() throws Exception {
+        ReadFileTool tool = new ReadFileTool(
+                new SandboxFileStore(temporaryFolder.getRoot().toPath()));
 
         assertEquals("read_file", tool.name());
-        assertEquals("Reads a file from the sandbox directory.", tool.description());
+        assertEquals("Reads up to 10,000 characters from a file in the sandbox.", tool.description());
     }
 }
