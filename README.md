@@ -70,3 +70,44 @@ It created TextUtils.java as well as multiple tests inside AppTest.java
 ### Comparison
 
 The code created using the naive prompt did surprisingly well in covering fail cases, but it fails to return 0 for an empty string. It also used a completely different approach using the Pattern class.
+
+## Lab 3: Sandbox Tools
+
+### Architecture
+
+- `AgentTool` defines the common interface.
+- `SandboxFileStore` provides list/read/write operations.
+- `SandboxPaths` validates paths.
+- `RunJavaTestsTool` runs tests for a maven project.
+
+### Sandbox Layout
+
+- `workspace` is the sandbox root.
+- `workspace/calculator` is the Java project used by the demo.
+
+## Running Tests and the demo
+
+```powershell
+mvn test
+mvn compile
+java -cp target/classes edu.comp331.ToolDemo
+```
+
+The demo creates `workspace/tool-demo-output.txt` and leaves it there.
+
+## JUnit tests passed
+
+![](Screenshots/tests-passed.PNG)
+
+## Demo Output
+
+![](Screenshots/demorun1.PNG)
+
+## Demo Output tests passed
+
+![](Screenshots/demorun2.PNG)
+
+## Limitations
+
+Path checks only block ordinary traversal and symlink.
+The demo leaves `workspace/tool-demo.output.txt` behind.
