@@ -79,11 +79,7 @@ The code created using the naive prompt did surprisingly well in covering fail c
 - `SandboxFileStore` provides list/read/write operations.
 - `SandboxPaths` validates paths.
 - `RunJavaTestsTool` runs tests for a maven project.
-
-### Sandbox Layout
-
-- `workspace` is the sandbox root.
-- `workspace/calculator` is the Java project used by the demo.
+- `workspace/calculator` is the sandbox root.
 
 ## Running Tests and the demo
 
@@ -93,7 +89,7 @@ mvn compile
 java -cp target/classes edu.comp331.ToolDemo
 ```
 
-The demo creates `workspace/tool-demo-output.txt` and leaves it there.
+The demo creates `workspace/calculator/tool-demo-output.txt` and leaves it there.
 
 ## JUnit tests passed
 
@@ -109,5 +105,16 @@ The demo creates `workspace/tool-demo-output.txt` and leaves it there.
 
 ## Limitations
 
-Path checks only block ordinary traversal and symlink.
-The demo leaves `workspace/tool-demo.output.txt` behind.
+- Path checks only block ordinary traversal and symlink.
+- The demo leaves `workspace/calculator/tool-demo-output.txt` behind.
+- Maven can execute project code/plugins.
+
+## AI Usage
+
+### Accepted
+
+I accepted a proposal to inject a process runner so the command restriction could be tested without launching Maven. The test verifies that the runner receives only the fixed Maven test command. The tool tests passed.
+
+### Revised
+
+The original path-traversal test name `../outside.txt` but did not create that file. I revised it by creating an existing file oustide the sandbox for testing.
