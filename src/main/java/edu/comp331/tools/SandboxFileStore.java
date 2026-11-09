@@ -6,7 +6,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
+import java.nio.file.OpenOption;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -77,5 +79,21 @@ public final class SandboxFileStore implements SandboxFiles {
         }
 
         return content.toString();
+    }
+
+    @Override
+    public void write(Path relativeFile, String content) throws IOException {
+        if (content == null) {
+            throw new IllegalArgumentException("File content is required.");
+        }
+
+        Path file = paths.resolveForWrite(relativeFile);
+        OpenOption[] options = {
+                StandardOpenOption.CREATE,
+                StandardOpenOption.TRUNCATE_EXISTING,
+                StandardOpenOption.WRITE,
+                LinkOption.NOFOLLOW_LINKS
+        };
+        Files.writeString(file, content, StandardCharsets.UTF_8, options);
     }
 }

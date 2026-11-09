@@ -42,4 +42,42 @@ final class SandboxPaths {
 
         return realTarget;
     }
+
+    Path resolveForWrite(Path relativePath) throws IOException {
+        if (relativePath == null || relativePath.isAbsolute()) {
+            throw new IOException("A relative path inside the sandbox is required.");
+        }
+
+        Path target = root.resolve(relativePath).normalize();
+        if (!target.startsWith(root) || target.equals(root)) {
+            throw new IOException("The path is outside the sandbox or is not a file.");
+        }
+
+        Path parent = target.getParent();
+        if (parent == null) {
+            throw new IOException("The requested file must be inside the sandbox.");
+        }
+
+        Path realParent = parent.toRealPath();
+        if (!realParent.startsWith(root) || !Files.isDirectory(realParent)) {
+            throw new IOException("The parent directory is outside the sandbox.");
+        }
+
+        Path fileName = target.getFileName();
+        if (fileName == null) {
+            throw new IOException("A file name is required.");
+        }
+
+        Path resolvedTarget = realParent.resolve(fileName);
+        if (Files.exists(resolvedTarget) || Files.isSymbolicLink(resolvedTarget)) {
+            Path realTarget = resolvedTarget.toRealPath();
+            if (!realTarget.startsWith(root)) {
+                throw new IOException("The path is outside the sandbox.");
+            }
+
+            return realTarget;
+        }
+
+        return resolvedTarget;
+    }
 }

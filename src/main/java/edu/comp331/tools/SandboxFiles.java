@@ -9,4 +9,6 @@ public interface SandboxFiles {
     List<FileInfo> list(Path relativeDirectory) throws IOException;
 
     String read(Path relativeFile, int maxCharacters) throws IOException;
+
+    void write(Path relativeFile, String content) throws IOException;
 }
